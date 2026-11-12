@@ -54,6 +54,8 @@ public class SistemaPeluqueria {
                     cancelarPendiente();
                     break;
                 case 8:
+                    deshacerProcesamiento();
+                    break;
                 case 9:
                     System.out.println("Opción aún no implementada.");
                     break;
@@ -207,6 +209,24 @@ public class SistemaPeluqueria {
             }
 
             System.out.println("Cliente cancelado: " + cancelado);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    /**
+     * Deshacer: la pila entrega al último cliente procesado (LIFO),
+     * se le devuelve el estado "Pendiente" y se encola de nuevo.
+     * Siguiendo la regla de la guía, vuelve a entrar por el FINAL de la cola.
+     */
+    private void deshacerProcesamiento() {
+        try {
+            if (historialProcesados.esVacia()) {
+                throw new Exception("No hay procesamientos para deshacer");
+            }
+            ClienteServicio ultimo = (ClienteServicio) historialProcesados.desapilar();
+            ultimo.setEstado("Pendiente");
+            colaPendientes.encolar(ultimo);
+            System.out.println("Procesamiento deshecho. Vuelve a pendientes: " + ultimo);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
