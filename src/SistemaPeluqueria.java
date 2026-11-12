@@ -42,6 +42,8 @@ public class SistemaPeluqueria {
                     verPendientes();
                     break;
                 case 4:
+                    procesarSiguiente();
+                    break;
                 case 5:
                 case 6:
                 case 7:
@@ -112,6 +114,25 @@ public class SistemaPeluqueria {
         try {
             System.out.println("--- Clientes pendientes (el 1 es el próximo) ---");
             colaPendientes.mostrar();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    /**
+     * Procesar: saca de la cola al cliente que lleva más tiempo esperando (FIFO),
+     * le cambia el estado y lo apila en el historial (LIFO).
+     * La lista general no se toca: sigue teniendo al cliente, y como guarda
+     * la misma referencia al objeto, también verá el nuevo estado.
+     */
+    private void procesarSiguiente() {
+        try {
+            if (colaPendientes.esVacia()) {
+                throw new Exception("No hay clientes pendientes por procesar");
+            }
+            ClienteServicio procesado = (ClienteServicio) colaPendientes.desencolar();
+            procesado.setEstado("Procesado");
+            historialProcesados.apilar(procesado);
+            System.out.println("Cliente procesado: " + procesado);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
