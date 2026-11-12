@@ -72,4 +72,45 @@ public class Cola {
         }
         return frente.getDato();
     }
+    /**
+     * Recorre la cola desde el frente comparando con equals().
+     * No altera la cola: solo mira, no saca nada.
+     */
+    public boolean contiene(Object dato) {
+        if (dato == null) {
+            return false;
+        }
+        Nodo actual = frente;
+        while (actual != null) {
+            if (actual.getDato().equals(dato)) {
+                return true;
+            }
+            actual = actual.getDerecha();
+        }
+        return false;
+    }
+
+    // Vacía la cola soltando las referencias al frente y al fin
+    public void limpiar() {
+        frente = null;
+        fin = null;
+        cuenta = 0;
+    }
+
+    /**
+     * Muestra la cola en orden de atención: del frente (próximo)
+     * hacia el fin (último en llegar).
+     */
+    public void mostrar() throws Exception {
+        if (esVacia()) {
+            throw new Exception("La cola está vacía");
+        }
+        Nodo actual = frente;
+        int posicion = 1;
+        while (actual != null) {
+            System.out.println(posicion + ". " + actual.getDato());
+            actual = actual.getDerecha();
+            posicion++;
+        }
+    }
 }
