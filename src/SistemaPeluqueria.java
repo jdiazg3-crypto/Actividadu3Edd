@@ -57,7 +57,7 @@ public class SistemaPeluqueria {
                     deshacerProcesamiento();
                     break;
                 case 9:
-                    System.out.println("Opción aún no implementada.");
+                    verCantidades();
                     break;
                 case 10:
                     System.out.println("Hasta pronto.");
@@ -230,6 +230,23 @@ public class SistemaPeluqueria {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+    /**
+     * Muestra el tamaño de cada estructura. Cada cliente registrado está en
+     * un solo estado, así que los cancelados se calculan por diferencia:
+     * total - pendientes - procesados.
+     */
+    private void verCantidades() {
+        int total = listaGeneral.cuentaElementos();
+        int pendientes = colaPendientes.tamanio();
+        int procesados = historialProcesados.tamanio();
+        int cancelados = total - pendientes - procesados;
+
+        System.out.println("--- Cantidad de elementos ---");
+        System.out.println("Registrados (lista general): " + total);
+        System.out.println("Pendientes (cola): " + pendientes);
+        System.out.println("Procesados (pila): " + procesados);
+        System.out.println("Cancelados: " + cancelados);
     }
 
     // Lee un entero y repite la pregunta hasta que el usuario escriba un número válido
