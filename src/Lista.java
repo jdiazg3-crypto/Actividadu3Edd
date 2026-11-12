@@ -227,4 +227,47 @@ public class Lista {
         --cuenta;
         return objetivo.getDato();
     }
+    /**
+     * Vacía la lista. Al poner primero y ultimo en null, ningún nodo
+     * queda referenciado y Java libera la memoria automáticamente.
+     */
+    public void limpiar() {
+        primero = null;
+        ultimo = null;
+        cuenta = 0;
+    }
+
+    /**
+     * Recorre de izquierda a derecha: parte del primero y avanza
+     * con getDerecha() hasta llegar a null.
+     */
+    public void mostrarAdelante() throws Exception {
+        if (esVacia()) {
+            throw new Exception("La lista está vacía");
+        }
+        Nodo actual = primero;
+        int posicion = 0;
+        while (actual != null) {
+            System.out.println(posicion + ". " + actual.getDato());
+            actual = actual.getDerecha();
+            posicion++;
+        }
+    }
+
+    /**
+     * Recorre de derecha a izquierda: parte del último y retrocede
+     * con getIzquierda(). Es posible porque los nodos son doblemente enlazados.
+     */
+    public void mostrarAtras() throws Exception {
+        if (esVacia()) {
+            throw new Exception("La lista está vacía");
+        }
+        Nodo actual = ultimo;
+        int posicion = cuenta - 1;
+        while (actual != null) {
+            System.out.println(posicion + ". " + actual.getDato());
+            actual = actual.getIzquierda();
+            posicion--;
+        }
+    }
 }
