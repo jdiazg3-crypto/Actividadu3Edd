@@ -51,6 +51,8 @@ public class SistemaPeluqueria {
                     buscarElemento();
                     break;
                 case 7:
+                    cancelarPendiente();
+                    break;
                 case 8:
                 case 9:
                     System.out.println("Opción aún no implementada.");
@@ -162,6 +164,49 @@ public class SistemaPeluqueria {
             int posicion = listaGeneral.buscarDato(buscado);
             ClienteServicio encontrado = (ClienteServicio) listaGeneral.buscarDato(posicion);
             System.out.println("Encontrado en la posición " + posicion + " de la lista: " + encontrado);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    /**
+     * Cancelar: la guía no permite borrar del centro de la cola, así que se usa
+     * una cola auxiliar. Se vacía la cola de pendientes enviando cada cliente
+     * a la auxiliar (excepto el cancelado) y luego se devuelven todos a la cola
+     * original. Como se respeta el orden FIFO en ambos viajes, los demás
+     * clientes conservan su orden de llegada.
+     * El cliente cancelado sigue en la lista general, con estado "Cancelado".
+     */
+    private void cancelarPendiente() {
+        try {
+            if (colaPendientes.esVacia()) {
+                throw new Exception("No hay clientes pendientes para cancelar");
+            }
+            int turno = leerEntero("Número de turno a cancelar: ");
+            ClienteServicio buscado = new ClienteServicio(turno, "", "", "");
+            if (!colaPendientes.contiene(buscado)) {
+                throw new Exception("El turno " + turno + " no está en la cola de pendientes");
+            }
+
+            Cola auxiliar = new Cola();
+            ClienteServicio cancelado = null;
+
+            // 1) Vaciar la cola de pendientes hacia la auxiliar, saltando al cancelado
+            while (!colaPendientes.esVacia()) {
+                ClienteServicio actual = (ClienteServicio) colaPendientes.desencolar();
+                if (actual.equals(buscado)) {
+                    actual.setEstado("Cancelado");
+                    cancelado = actual;
+                } else {
+                    auxiliar.encolar(actual);
+                }
+            }
+
+            // 2) Devolver los clientes restantes a la cola de pendientes
+            while (!auxiliar.esVacia()) {
+                colaPendientes.encolar(auxiliar.desencolar());
+            }
+
+            System.out.println("Cliente cancelado: " + cancelado);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
