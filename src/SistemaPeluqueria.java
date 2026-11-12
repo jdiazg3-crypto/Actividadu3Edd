@@ -45,6 +45,8 @@ public class SistemaPeluqueria {
                     procesarSiguiente();
                     break;
                 case 5:
+                    verHistorial();
+                    break;
                 case 6:
                 case 7:
                 case 8:
@@ -133,6 +135,14 @@ public class SistemaPeluqueria {
             procesado.setEstado("Procesado");
             historialProcesados.apilar(procesado);
             System.out.println("Cliente procesado: " + procesado);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    private void verHistorial() {
+        try {
+            System.out.println("--- Historial de procesados (el 1 es el más reciente) ---");
+            historialProcesados.mostrar();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
