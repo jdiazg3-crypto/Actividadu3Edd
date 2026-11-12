@@ -48,6 +48,8 @@ public class SistemaPeluqueria {
                     verHistorial();
                     break;
                 case 6:
+                    buscarElemento();
+                    break;
                 case 7:
                 case 8:
                 case 9:
@@ -143,6 +145,23 @@ public class SistemaPeluqueria {
         try {
             System.out.println("--- Historial de procesados (el 1 es el más reciente) ---");
             historialProcesados.mostrar();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    /**
+     * Busca en la lista general (que tiene a todos los clientes).
+     * Se crea un cliente auxiliar solo con el turno: equals() compara por
+     * turno, así que la lista lo encuentra y devuelve su posición.
+     * Con esa posición se recupera el cliente real.
+     */
+    private void buscarElemento() {
+        try {
+            int turno = leerEntero("Número de turno a buscar: ");
+            ClienteServicio buscado = new ClienteServicio(turno, "", "", "");
+            int posicion = listaGeneral.buscarDato(buscado);
+            ClienteServicio encontrado = (ClienteServicio) listaGeneral.buscarDato(posicion);
+            System.out.println("Encontrado en la posición " + posicion + " de la lista: " + encontrado);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
