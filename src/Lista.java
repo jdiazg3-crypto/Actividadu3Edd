@@ -159,4 +159,72 @@ public class Lista {
         siguiente.setIzquierda(objetivo);
         ++cuenta;
     }
+    /**
+     * Elimina el primer nodo y devuelve su dato.
+     * Si era el único, la lista queda vacía (primero y ultimo en null).
+     */
+    public Object eliminarPrimero() throws Exception {
+        if (esVacia()) {
+            throw new Exception("La lista está vacía");
+        }
+        Object dato = primero.getDato();
+        if (cuenta == 1) {
+            primero = null;
+            ultimo = null;
+        } else {
+            primero = primero.getDerecha();
+            primero.setIzquierda(null);
+        }
+        --cuenta;
+        return dato;
+    }
+
+    /**
+     * Elimina el último nodo y devuelve su dato.
+     * Gracias a la referencia izquierda no hace falta recorrer la lista.
+     */
+    public Object eliminarUltimo() throws Exception {
+        if (esVacia()) {
+            throw new Exception("La lista está vacía");
+        }
+        Object dato = ultimo.getDato();
+        if (cuenta == 1) {
+            primero = null;
+            ultimo = null;
+        } else {
+            ultimo = ultimo.getIzquierda();
+            ultimo.setDerecha(null);
+        }
+        --cuenta;
+        return dato;
+    }
+
+    /**
+     * Elimina el nodo de una posición y devuelve su dato.
+     * Si es un nodo del medio, el anterior y el siguiente se enlazan entre sí.
+     */
+    public Object eliminarEnPosicion(int indice) throws Exception {
+        if (esVacia()) {
+            throw new Exception("La lista está vacía");
+        }
+        if (indice < 0 || indice >= cuenta) {
+            throw new Exception("La posición " + indice + " está fuera del rango 0 - " + (cuenta - 1));
+        }
+        if (indice == 0) {
+            return eliminarPrimero();
+        }
+        if (indice == cuenta - 1) {
+            return eliminarUltimo();
+        }
+        Nodo objetivo = buscar(indice);
+        Nodo anterior = objetivo.getIzquierda();
+        Nodo siguiente = objetivo.getDerecha();
+
+        anterior.setDerecha(siguiente);
+        siguiente.setIzquierda(anterior);
+        objetivo.setIzquierda(null);
+        objetivo.setDerecha(null);
+        --cuenta;
+        return objetivo.getDato();
+    }
 }
