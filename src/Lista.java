@@ -108,4 +108,55 @@ public class Lista {
         }
         return false;
     }
+    /**
+     * Agrega un dato al inicio de la lista.
+     * El nuevo nodo apunta a la derecha al antiguo primero,
+     * y el antiguo primero apunta a la izquierda al nuevo.
+     */
+    public void agregarAlInicio(Object dato) throws Exception {
+        if (dato == null) {
+            throw new Exception("El dato no puede ser nulo");
+        }
+        Nodo objetivo = new Nodo(dato);
+        if (esVacia()) {
+            primero = objetivo;
+            ultimo = objetivo;
+        } else {
+            objetivo.setDerecha(primero);
+            primero.setIzquierda(objetivo);
+            primero = objetivo;
+        }
+        ++cuenta;
+    }
+
+    /**
+     * Inserta un dato en una posición (0 hasta cuenta).
+     * Casos: posición 0 = al inicio, posición cuenta = al final,
+     * cualquier otra = entre dos nodos, reenlazando 4 referencias.
+     */
+    public void agregarEnPosicion(int indice, Object dato) throws Exception {
+        if (dato == null) {
+            throw new Exception("El dato no puede ser nulo");
+        }
+        if (indice < 0 || indice > cuenta) {
+            throw new Exception("La posición " + indice + " está fuera del rango 0 - " + cuenta);
+        }
+        if (indice == 0) {
+            agregarAlInicio(dato);
+            return;
+        }
+        if (indice == cuenta) {
+            agregar(dato);
+            return;
+        }
+        Nodo siguiente = buscar(indice);
+        Nodo anterior = siguiente.getIzquierda();
+        Nodo objetivo = new Nodo(dato);
+
+        anterior.setDerecha(objetivo);
+        objetivo.setIzquierda(anterior);
+        objetivo.setDerecha(siguiente);
+        siguiente.setIzquierda(objetivo);
+        ++cuenta;
+    }
 }
