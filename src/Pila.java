@@ -66,4 +66,64 @@ public class Pila {
         }
         return cima.getDato();
     }
+    /**
+     * Recorre la pila desde la cima hacia abajo (getIzquierda)
+     * comparando con equals(). No modifica la pila.
+     */
+    public boolean contiene(Object dato) {
+        if (dato == null) {
+            return false;
+        }
+        Nodo actual = cima;
+        while (actual != null) {
+            if (actual.getDato().equals(dato)) {
+                return true;
+            }
+            actual = actual.getIzquierda();
+        }
+        return false;
+    }
+
+    // Vacía la pila soltando la referencia a la cima
+    public void limpiar() {
+        cima = null;
+        cuenta = 0;
+    }
+
+    /**
+     * Muestra la pila de arriba hacia abajo: primero el más
+     * reciente (cima) y al final el más antiguo.
+     */
+    public void mostrar() throws Exception {
+        if (esVacia()) {
+            throw new Exception("La pila está vacía");
+        }
+        Nodo actual = cima;
+        int posicion = 1;
+        while (actual != null) {
+            System.out.println(posicion + ". " + actual.getDato());
+            actual = actual.getIzquierda();
+            posicion++;
+        }
+    }
+
+    /**
+     * Busca un dato y devuelve su posición contada desde la cima
+     * (1 = cima). Lanza excepción si la pila está vacía o no lo encuentra.
+     */
+    public int buscar(Object dato) throws Exception {
+        if (esVacia()) {
+            throw new Exception("La pila está vacía");
+        }
+        Nodo actual = cima;
+        int posicion = 1;
+        while (actual != null) {
+            if (actual.getDato().equals(dato)) {
+                return posicion;
+            }
+            actual = actual.getIzquierda();
+            posicion++;
+        }
+        throw new Exception("El elemento no está en la pila");
+    }
 }
